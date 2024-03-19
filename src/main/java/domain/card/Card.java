@@ -1,5 +1,8 @@
 package domain.card;
 
+import camp.nextstep.edu.missionutils.Randoms;
+
+import java.util.List;
 import java.util.Objects;
 
 /**
@@ -7,15 +10,33 @@ import java.util.Objects;
  */
 public class Card {
     private final Symbol symbol;
-
     private final Type type;
+    private static final List<Card> cardList = CardFactory.create();
+    private static final int KING_QUEEN_JACK_POINT = 10;
 
     public Card(Symbol symbol, Type type) {
         this.symbol = symbol;
         this.type = type;
     }
 
-    // TODO Card 관련 추가 기능 구현
+    public static Card getCard() {
+        int cardIndex = Randoms.pickNumberInRange(0, cardList.size() - 1);
+        return cardList.get(cardIndex);
+    }
+
+    public Symbol getSymbol() {
+        return symbol;
+    }
+
+    public String toStringInKorean() {
+        String cards;
+        if (symbol.getScore() == KING_QUEEN_JACK_POINT && !"TEN".equals(symbol.name())) {
+            cards = symbol.name().charAt(0) + type.getKorName();
+        } else {
+            cards = symbol.getScore() + type.getKorName();
+        }
+        return cards;
+    }
 
     @Override
     public boolean equals(Object o) {
